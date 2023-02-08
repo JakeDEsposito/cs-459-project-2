@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            main {
+                display: grid;
+                gap: 1rem;
+                grid-template-columns: repeat(6, 1fr);
+                justify-items: center;
+
+                margin: 1rem;                
+            }
+
+            main > div {
+                width: 10rem;
+                height: 10rem;
+            }
+        </style>
+
+        <script type="module">
+            import Cookies from 'https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/+esm'
+
+            Cookies.set('foo', 'bar')
+            Cookies.set('test', 'thing')
+        </script>
+
+        <script>
+            // Created by: https://stackoverflow.com/questions/3665115/how-to-create-a-file-in-memory-for-user-to-download-but-not-through-server#answer-18197341
+            // Modified by: Jake D'Esposito
+            function downloadData() {
+                const filename = "data.json"
+                const text = document.cookie
+                
+                var element = document.createElement('a')
+                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+                element.setAttribute('download', filename)
+
+                element.style.display = 'none'
+                document.body.appendChild(element)
+
+                element.click()
+
+                document.body.removeChild(element)
+            }
+        </script>
+    </head>
+    <body>
+        <button onclick="downloadData()">Download Data</button>
+        <main>
+            <div style="background-color: #f00;"></div>
+            <div style="background-color: #7f6000;"></div>
+            <div style="background-color: #385723;"></div>
+            <div style="background-color: #ffff00;"></div>
+            <div style="background-color: #002f8e;"></div>
+            <div style="background-color: #7030a0;"></div>
+        </main>
+        <main>
+            <div style="background-color: #ff00cb"></div>
+            <div style="background-color: #7f6000;"></div>
+            <div style="background-color: #6ddd21;"></div>
+            <div style="background-color: #ffff00;"></div>
+            <div style="background-color: #002f8e;"></div>
+            <div style="background-color: #7030a0;"></div>
+        </main>
+        <main>
+            <div style="background-color: #ff00cb;"></div>
+            <div style="background-color: #7f6000;"></div>
+            <div style="background-color: #6ddd21;"></div>
+            <div style="background-color: #ffff00;"></div>
+            <div style="background-color: #002f8e;"></div>
+            <div style="background-color: #7030a0;"></div>
+        </main>
+
+        <!-- Current Color Set -->
+        <main>
+            <div style="background-color: #ff0048;"></div>
+            <div style="background-color: #7f6000;"></div>
+            <div style="background-color: #6ddd21;"></div>
+            <div style="background-color: #ffff00;"></div>
+            <div style="background-color: #011668;"></div>
+            <div style="background-color: #8000ff;"></div>
+        </main>
+    </body>
+</html>
