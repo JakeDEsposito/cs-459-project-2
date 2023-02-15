@@ -91,12 +91,14 @@
                 const choicesElement  = document.getElementById("choices")
                 const answerElement = document.getElementById("answer")
 
-                let choice1, choice2, answer
+                let choice1, choice2, answer, startTime
 
                 function choiceSelected ( choice ) {
+                    // TODO: Get end time and use it.
                     cookieChoice({
                         choice,
-                        correct: choice === answer
+                        correct: choice === answer,
+                        duration: Date.now() - startTime
                     })
                     const firstChoice = choicesElement.children[0]
                     const secondChoice = choicesElement.children[1]
@@ -113,11 +115,7 @@
                     while(choice1 === choice2)
                         choice2 = randomRanged(0, colors.length - 1)
 
-                    //choice2 = random() > 0.5 ? randomRanged(0, choice1) : randomRanged(choice1 + 1, colors.length - 1)
-
-                    //if (choice2) choice2 = randomRanged(0, 5)
-
-                    console.log({ choice1, choice2 })
+                    // console.log({ choice1, choice2 })
 
                     answer = random() > 0.5 ? choice1 : choice2
                 }
@@ -134,6 +132,8 @@
                     secondChoice.onclick = () => choiceSelected( choice2 )
 
                     answerElement.style.backgroundColor = colors[answer]
+
+                    startTime = Date.now()
                 }, 1000)
                 createNewChoices()
             </script>
