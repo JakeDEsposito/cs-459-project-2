@@ -2,7 +2,7 @@
 <html>
     <head>
         <style>
-            main {
+            section {
                 display: grid;
                 gap: 1rem;
                 /* grid-template-columns: repeat(6, 1fr); */
@@ -27,13 +27,12 @@
             #answer {
                 grid-area: "answer";
             }
+
+            .hidden {
+                content-visibility: hidden;
+                visibility: hidden;
+            }
         </style>
-
-        <script type="module">
-
-        </script>
-
-        <!-- <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script> -->
 
         <script>
             // Created by: https://stackoverflow.com/questions/3665115/how-to-create-a-file-in-memory-for-user-to-download-but-not-through-server#answer-18197341
@@ -53,23 +52,20 @@
 
                 document.body.removeChild(element)
             }
-
-            // https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb#answer-5624139
-            function rgbToHex(r, g, b) {
-                return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
-            }
-
         </script>
     </head>
     <body>
         <button onclick="downloadData()">Download Data</button>
 
         <main>
-            <section id="choices">
-                <div class="choice"></div>
-                <div class="choice"></div>
+            <section class="hidden">
+                <div id="choices">
+                    <div class="choice"></div>
+                    <div class="choice"></div>
+                </div>
+                <div class="choice" id="answer"></div>
             </section>
-            <div class="choice" id="answer"></div>
+            <button id="startbutton">Start</button>
 
             <script type="module">
                 import Cookies from 'https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/+esm'
@@ -137,7 +133,13 @@
 
                     startTime = Date.now()
                 }, 1000)
-                createNewChoices()
+
+                function startTesting () {
+                    document.getElementsByClassName("hidden")[0].className = ""
+                    document.getElementById("startbutton").className = "hidden"
+                    createNewChoices()
+                }
+                document.getElementById("startbutton").onclick = startTesting
             </script>
         </main>
 
