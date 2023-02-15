@@ -107,15 +107,17 @@
 
                     createNewChoices()
                 }
+                // FIXME: Something feels off about the randomness of the choices.
                 const randomRanged = (max, min) => Math.floor( Math.random() * ( max - min + 1 ) + min )
 
                 function createChoices () {
+                    // FIXME: This is probably not the best way to pick the two random numbers.
                     choice1 = randomRanged(0, colors.length - 1)
                     choice2 = randomRanged(0, colors.length - 1)
                     while(choice1 === choice2)
                         choice2 = randomRanged(0, colors.length - 1)
 
-                    // console.log({ choice1, choice2 })
+                    // console.log({ choice1, choice2 }) // Debug logging
 
                     answer = random() > 0.5 ? choice1 : choice2
                 }
