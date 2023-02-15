@@ -34,28 +34,10 @@
             }
         </style>
 
-        <script>
-            // Created by: https://stackoverflow.com/questions/3665115/how-to-create-a-file-in-memory-for-user-to-download-but-not-through-server#answer-18197341
-            // Modified by: Jake D'Esposito
-            function downloadData() {
-                const filename = "data.json"
-                const text = document.cookie
-                
-                var element = document.createElement('a')
-                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
-                element.setAttribute('download', filename)
-
-                element.style.display = 'none'
-                document.body.appendChild(element)
-
-                element.click()
-
-                document.body.removeChild(element)
-            }
-        </script>
     </head>
     <body>
-        <button onclick="downloadData()">Download Data</button>
+        <button id="downloadData">Download Data</button>
+        <button id="removeCookies">Remove Cookies</button>
 
         <main>
             <section class="hidden">
@@ -140,6 +122,33 @@
                     createNewChoices()
                 }
                 document.getElementById("startbutton").onclick = startTesting
+
+                // Created by: https://stackoverflow.com/questions/3665115/how-to-create-a-file-in-memory-for-user-to-download-but-not-through-server#answer-18197341
+                // Modified by: Jake D'Esposito
+                // BUG: The data that it writes out the the file is correct, all that is wrong is that an extra backslash needs to be put in where ever there is a backslash.
+                function downloadData () {
+                    const filename = "data.json"
+                    const text = JSON.stringify(Cookies.get())
+                    
+                    var element = document.createElement('a')
+                    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+                    element.setAttribute('download', filename)
+
+                    element.style.display = 'none'
+                    document.body.appendChild(element)
+
+                    element.click()
+
+                    document.body.removeChild(element)
+                }
+                document.getElementById("downloadData").onclick = downloadData
+
+                function removeCookies () {
+                    if(confirm("You are about to removed the data!\nAre you sure you want to do this?"))
+                        for (const cookie in Cookies.get())
+                            Cookies.remove(cookie)
+                }
+                document.getElementById("removeCookies").onclick = removeCookies
             </script>
         </main>
 
