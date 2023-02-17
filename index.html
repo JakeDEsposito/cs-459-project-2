@@ -95,6 +95,15 @@
 
                     createNewChoices()
                 }
+
+                /**
+                 * Returns a random number between min and max, n.
+                 * 
+                 * @param {number} min The minimum that n can be.
+                 * @param {number} max The maximum that n can be.
+                 * 
+                 * @returns {number} n
+                 */
                 // FIXME: Something feels off about the randomness of the choices.
                 const randomRanged = (min, max) => random < 0.1 ? min : floor( random() * ( max - min + 1 ) + min )
 
