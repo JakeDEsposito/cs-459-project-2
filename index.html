@@ -36,6 +36,10 @@
             button {
                 padding: 1rem;
             }
+
+            #clock {
+                font-size: xx-large;
+            }
         </style>
 
     </head>
@@ -52,6 +56,7 @@
                     <div class="choice"></div> -->
                 </div>
                 <div class="choice" id="answer"></div>
+                <div id="clock" class="hidden"></div>
             </section>
             <button id="startbutton">Start</button>
 
@@ -140,9 +145,31 @@
                     startTime = Date.now()
                 }, 1000)
 
+                // Created by: https://www.w3schools.com/js/tryit.asp?filename=tryjs_timing_clock
+                // Modified by: Jake D'Esposito
+                let start
+                function clock() {
+                    const today = new Date(Date.now() - start)
+                    let m = today.getMinutes()
+                    let s = today.getSeconds()
+                    m = checkTime(m)
+                    s = checkTime(s)
+                    document.getElementById('clock').innerHTML =  m + ":" + s
+                    setTimeout(clock, 1000)
+                }
+                function checkTime(i) {
+                    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+                        return i;
+                }
+
                 function startTesting () {
                     document.getElementsByClassName("hidden")[0].className = ""
                     document.getElementById("startbutton").className = "hidden"
+
+                    start = Date.now()
+                    document.getElementById("clock").className = ""
+                    clock()
+
                     createNewChoices()
                 }
                 document.getElementById("startbutton").onclick = startTesting
