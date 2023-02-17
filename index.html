@@ -5,8 +5,7 @@
             section {
                 display: grid;
                 gap: 1rem;
-                /* grid-template-columns: repeat(6, 1fr); */
-                grid-template-columns: "choices" "answer";
+                grid-template-rows: repeat(3, 1fr);
                 justify-items: center;
 
                 margin: 1rem;
@@ -17,11 +16,15 @@
                 height: 10rem;
             }
 
+            /* FIXME: Needs a media query for when the screen width gets to small */
             #choices {
                 grid-area: "choices";
+
+                width: -webkit-fill-available;
                 
                 display: flex;
-                gap: 6rem;
+                justify-content: space-evenly;
+                /* gap: 6rem; */
             }
 
             #answer {
@@ -38,7 +41,8 @@
             }
 
             #clock {
-                font-size: xx-large;
+                font-size: 4rem;
+                align-self: center;
             }
         </style>
 
@@ -52,8 +56,8 @@
                 <div id="choices">
                     <div class="choice"></div>
                     <div class="choice"></div>
-                    <!-- <div class="choice"></div>
-                    <div class="choice"></div> -->
+                    <div class="choice"></div>
+                    <div class="choice"></div>
                 </div>
                 <div class="choice" id="answer"></div>
                 <div id="clock" class="hidden"></div>
