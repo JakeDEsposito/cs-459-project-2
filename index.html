@@ -48,6 +48,8 @@
                 <div id="choices">
                     <div class="choice"></div>
                     <div class="choice"></div>
+                    <!-- <div class="choice"></div>
+                    <div class="choice"></div> -->
                 </div>
                 <div class="choice" id="answer"></div>
             </section>
@@ -105,12 +107,7 @@
                         availableColors = availableColors.filter((c) => c != color)
                     }
 
-                    choices[0] = randomRanged(0, colors.length - 1)
-                    removeAvailableColor(choices[0])
-
-                    console.log({availableColors})
-
-                    for (let i = 1; i < choicesElement.children.length; i++) {
+                    for (let i = 0; i < choicesElement.children.length; i++) {
                         let temp = randomRanged(0, availableColors.length - 1)
                         choices[i] = availableColors[temp]
                         removeAvailableColor(choices[i])
