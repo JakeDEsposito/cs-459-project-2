@@ -177,7 +177,7 @@
                 // Created by: https://stackoverflow.com/questions/3665115/how-to-create-a-file-in-memory-for-user-to-download-but-not-through-server#answer-18197341
                 // Modified by: Jake D'Esposito
                 function downloadData () {
-                    const filename = "data.json"
+                    const filename = prompt("Enter name to save file as!", "data.json")
 
                     const dataArray = []
                     const cookies = Cookies.get()
