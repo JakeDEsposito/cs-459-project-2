@@ -32,6 +32,10 @@
                 content-visibility: hidden;
                 visibility: hidden;
             }
+
+            button {
+                padding: 1rem;
+            }
         </style>
 
     </head>
@@ -55,70 +59,77 @@
                 let choicesCounter = 0
                 const cookieChoice = (obj) => Cookies.set(choicesCounter++, JSON.stringify(obj))
 
-                const { random } = Math
+                const { random, floor } = Math
 
                 const colors = [
-                    "#ff0000",
-                    "#7f6000",
-                    "#385723",
-                    "#ffff00",
-                    "#002f8e",
-                    "#7030a0"
-
-                    // Modified colors
-                    // "#ff0c00",
-                    // "#5d5700",
-                    // "#027752",
-                    // "#ffff00",
-                    // "#4200ff",
-                    // "#800063"
+                    { original: "#ff0000", modified: "#ff0c00", },
+                    { original: "#7f6000", modified: "#5d5700", },
+                    { original: "#385723", modified: "#027752", },
+                    { original: "#ffff00", modified: "#ffff00", },
+                    { original: "#002f8e", modified: "#4200ff", },
+                    { original: "#7030a0", modified: "#800063" }
                 ]
 
                 const choicesElement  = document.getElementById("choices")
                 const answerElement = document.getElementById("answer")
 
-                let choice1, choice2, answer, startTime
+                let choices = [], answer, startTime, colorSet
 
                 function choiceSelected ( choice ) {
                     cookieChoice({
                         choice,
+                        choices,
+                        colorSet,
                         correct: choice === answer,
                         duration: Date.now() - startTime
                     })
-                    const firstChoice = choicesElement.children[0]
-                    const secondChoice = choicesElement.children[1]
-                    firstChoice.style.backgroundColor = secondChoice.style.backgroundColor = answerElement.style.backgroundColor = "white"
-                    firstChoice.onclick = secondChoice.onclick = () => {}
+
+                    answerElement.style.backgroundColor = "white"
+
+                    for(const child of choicesElement.children) {
+                        child.style.backgroundColor = "white"
+                        child.onclick = () => {}
+                    }
 
                     createNewChoices()
                 }
                 // FIXME: Something feels off about the randomness of the choices.
-                const randomRanged = (max, min) => Math.floor( Math.random() * ( max - min + 1 ) + min )
+                const randomRanged = (min, max) => random < 0.1 ? min : floor( random() * ( max - min + 1 ) + min )
 
                 function createChoices () {
-                    // FIXME: This is probably not the best way to pick the two random numbers.
-                    choice1 = randomRanged(0, colors.length - 1)
-                    choice2 = randomRanged(0, colors.length - 1)
-                    while(choice1 === choice2)
-                        choice2 = randomRanged(0, colors.length - 1)
 
-                    // console.log({ choice1, choice2 }) // Debug logging
+                    colorSet = random() > 0.5 ? "original" : "modified"
 
-                    answer = random() > 0.5 ? choice1 : choice2
+                    let availableColors = Array.from({ length: colors.length }, () => 1).map((_, i) => i)
+                    const removeAvailableColor = (color) => {
+                        availableColors = availableColors.filter((c) => c != color)
+                    }
+
+                    choices[0] = randomRanged(0, colors.length - 1)
+                    removeAvailableColor(choices[0])
+
+                    console.log({availableColors})
+
+                    for (let i = 1; i < choicesElement.children.length; i++) {
+                        let temp = randomRanged(0, availableColors.length - 1)
+                        choices[i] = availableColors[temp]
+                        removeAvailableColor(choices[i])
+                    }
+
+                    answer = choices[randomRanged(0, choices.length - 1)]
                 }
 
                 const createNewChoices = () => setTimeout(() => {
                     createChoices()
 
-                    const firstChoice = choicesElement.children[0]
-                    firstChoice.style.backgroundColor = colors[choice1]
-                    firstChoice.onclick = () => choiceSelected( choice1 )
+                    for(let i = 0; i < choicesElement.children.length; i++) {
+                        const child = choicesElement.children[i]
+                        const choice = choices[i]
+                        child.style.backgroundColor = colors[choice][colorSet]
+                        child.onclick = () => choiceSelected( choice )
+                    }
 
-                    const secondChoice = choicesElement.children[1]
-                    secondChoice.style.backgroundColor = colors[choice2]
-                    secondChoice.onclick = () => choiceSelected( choice2 )
-
-                    answerElement.style.backgroundColor = colors[answer]
+                    answerElement.style.backgroundColor = colors[answer][colorSet]
 
                     startTime = Date.now()
                 }, 1000)
@@ -132,10 +143,15 @@
 
                 // Created by: https://stackoverflow.com/questions/3665115/how-to-create-a-file-in-memory-for-user-to-download-but-not-through-server#answer-18197341
                 // Modified by: Jake D'Esposito
-                // BUG: The data that it writes out the the file is correct, all that is wrong is that an extra backslash needs to be put in where ever there is a backslash.
                 function downloadData () {
                     const filename = "data.json"
-                    const text = JSON.stringify(Cookies.get())
+
+                    const dataArray = []
+                    const cookies = Cookies.get()
+                    for (const [key, value] of Object.entries(cookies))
+                        dataArray[key] = JSON.parse(value)
+
+                    const text = JSON.stringify(dataArray)
                     
                     var element = document.createElement('a')
                     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
@@ -159,7 +175,18 @@
             </script>
         </main>
 
-        <!-- <main>
+        <!-- Original
+        <main>
+            <div style="background-color: #ff0000;"></div>
+            <div style="background-color: #7f6000;"></div>
+            <div style="background-color: #385723;"></div>
+            <div style="background-color: #ffff00;"></div>
+            <div style="background-color: #002f8e;"></div>
+            <div style="background-color: #7030a0;"></div>
+        </main> -->
+
+        <!-- Modified
+        <main>
             <div style="background-color: #ff0c00;"></div>
             <div style="background-color: #5d5700;"></div>
             <div style="background-color: #027752;"></div>
