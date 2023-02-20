@@ -114,8 +114,8 @@
                  * @returns {number} n
                  */
                 // FIXME: Something feels off about the randomness of the choices.
-                const randomRanged = (min, max) => random < 0.1 ? min : floor( random() * ( max - min + 1 ) + min )
-
+                const randomRanged = (min, max) => floor( random() * ( max - min + 1 ) + min )
+                
                 function createChoices () {
 
                     colorSet = random() > 0.5 ? "original" : "modified"
